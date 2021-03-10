@@ -20,7 +20,7 @@ abstract class FarmAnimal
      * 
      * Выводим информацию о результате каждого животного
      */
-    protected function productLog(){}
+    abstract protected function productLog();
 }
 
 

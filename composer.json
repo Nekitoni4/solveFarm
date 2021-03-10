@@ -1,0 +1,17 @@
+{
+    "name": "nekit/farm-solve",
+    "description": "Solve task",
+    "authors": [{
+        "name": "Nikita Golubev",
+        "email": "nekitgo80@gmail.com"
+    }],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Classes\\": "classes/"
+        },
+        "classmap": [
+            "classes/"
+        ]
+    }
+}

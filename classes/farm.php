@@ -1,10 +1,6 @@
 <?php
 
-namespace farm;
-
-require_once (realpath(__DIR__) . DIRECTORY_SEPARATOR . 'animal.php');
-
-use animal\FarmAnimal;
+namespace Classes\Farm;
 
 
 /**
@@ -27,22 +23,11 @@ class Farm
      * @return [void]
      * Рассчитывает и выводит на экран результативность каждого животного
      */
-    private function calculateProductsStat()
+    public function renderProductsStat()
     {   
-        $reducedProducts = array_map(function($animalProducts){
-            return array_reduce($animalProducts, function($curr, $next) {
-                return $curr + $next;
-            });
-        }, $this->productTracking);
-
-        foreach($reducedProducts as $animal => $productQuantity) {
+        foreach($this->productTracking as $animal => $productQuantity) {
             echo $animal . ': на выходе ' . $productQuantity . ' единиц продукта' . PHP_EOL;
         }
-    }
-
-
-    public function getProductsStat() {
-        $this->calculateProductsStat();
     }
 
 
@@ -54,7 +39,7 @@ class Farm
      * 
      * Добавляет экземпляр каждого животного в хлев
      */
-    private function setAnimalAccounting(FarmAnimal $animal)
+    private function setAnimalAccounting(\classes\Animal\FarmAnimal $animal)
     {
         array_push($this->animalTracking, $animal);
     }
@@ -79,17 +64,17 @@ class Farm
      * 
      * @return [void]
      * 
-     * Добавляет в хранилище каждую продукцию и распределяет по видам животных
+     * Собирает продукцию с животных и связывает каждый вид с общим количеством продукции
      * 
      */
-    private function setProductsAccounting(FarmAnimal $animal)
+    private function setProductsAccounting(\classes\Animal\FarmAnimal $animal)
     {
         [$quantityProducts, $animalType] = $animal->giveProduct();
-        if (isset($this->productTracking[$animalType])) {
-            array_push($this->productTracking[$animalType], $quantityProducts);
+        if (array_key_exists($animalType, $this->productTracking)) {
+            $this->productTracking[$animalType] += $quantityProducts;
             return;
         }
-        $this->productTracking[$animalType] = [$quantityProducts];
+        $this->productTracking[$animalType] = $quantityProducts;
     }
 
 
@@ -101,7 +86,7 @@ class Farm
      * 
      * Занимается распределением продукции и учётом животных
      */
-    public function setFarmAccounting(FarmAnimal $animal)
+    public function setFarmAccounting(\classes\Animal\FarmAnimal $animal)
     {
         $this->setProductsAccounting($animal);
         $this->setAnimalAccounting($animal);

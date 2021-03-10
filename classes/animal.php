@@ -27,7 +27,7 @@ abstract class FarmAnimal
 /**
  * [Description productCollector]
  * 
- * Определяем формат и количесвто потенциального выходного продукта
+ * Определяем формат и количество потенциального выходного продукта
  */
 trait productCollector
 

@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Classes\Animal;
 
+use Exception;
 
 /**
  * [Description FarmAnimal]
@@ -10,9 +13,7 @@ namespace Classes\Animal;
  */
 abstract class FarmAnimal
 {
-    protected $idAnimal;
-    protected $animalType;
-    protected $potentialQuantityProduct;
+    protected $idAnimal, $animalType, $quantityProducts, $minPotentialQuantity, $maxPotentialQuantity;
 
 
     /**
@@ -27,31 +28,57 @@ abstract class FarmAnimal
 /**
  * [Description productCollector]
  * 
- * Определяем формат и количество потенциального выходного продукта
+ * Определяем методы для получения типа животного и получения продукции
  */
-trait productCollector
+trait productGetter
 
 {
     /**
      * @return array
      * 
-     * Выводим массив из количества выходного продукта и тип животного
+     * Получаем тип животного
      */
-    public function giveProduct(): array
+    public function getTypeAnimal()
     {
-        return [$this->potentialQuantityProduct, $this->animalType];
+        return $this->animalType;
     }
 
+
+    /**
+     * @return [type]
+     * 
+     * Получаем продукцию
+     */
+    public function getProducts()
+    {
+        return $this->quantityProducts;
+    }
+}
+
+
+
+/**
+ * [Description productsSetter]
+ * 
+ * Определяем методы для сбора продукции
+ */
+trait productCollector
+{
+    use productGetter;
     /**
      * @param int $lowRange
      * @param int $highRange
      * 
-     * @return [void] Присваиваем каждому экземпляру животного количество продукции которое должно получиться
+     * @return [void] Получаем с каждого животного необходимую продукцию
      */
-    public function setPotentialQuantityProduct(int $lowRange, int $highRange) {
-        return $this->potentialQuantityProduct = rand($lowRange, $highRange);
+    public function collectProducts()
+    {
+        $this->quantityProducts = rand($this->minPotentialQuantity, $this->maxPotentialQuantity);
+        return $this->getProducts();
     }
 }
+
+
 
 
 /**
@@ -62,13 +89,15 @@ trait productCollector
 class Cow extends FarmAnimal
 {
 
+    protected $minPotentialQuantity = 8;
+    protected $maxPotentialQuantity = 12;
+
     use productCollector;
 
 
     public function __construct(string $idAnimal)
     {
         $this->idAnimal = $idAnimal;
-        $this->setPotentialQuantityProduct(8, 12);
         $this->animalType = 'Корова';
     }
 
@@ -80,18 +109,10 @@ class Cow extends FarmAnimal
      */
     public function productLog(): void
     {
-        echo 'Корова с личным номером ' . $this->idAnimal . ' надоила ' . $this->potentialQuantityProduct . ' л молока' . PHP_EOL;
-    }
-
-    public function __get($name)
-    {
-        switch ($name) {
-            case 'idAnimal':
-                return $this->idAnimal;
-            case 'animalType':
-                return $this->animalType;
-            case 'potentialQuantityProduct':
-                return $this->setPotentialQuantityProduct(8, 12);
+        if (isset($this->quantityProducts)) {
+            echo 'Корова с личным номером ' . $this->idAnimal . ' надоила ' .  $this->quantityProducts . ' л молока' . PHP_EOL;
+        } else {
+            echo 'Упс, продукция ещё не собрана';
         }
     }
 }
@@ -102,29 +123,22 @@ class Chicken extends FarmAnimal
 {
     use productCollector;
 
+    protected $minPotentialQuantity = 0;
+    protected $maxPotentialQuantity = 1;
+
     public function __construct(string $idAnimal)
     {
         $this->idAnimal = $idAnimal;
         $this->animalType = 'Курица';
-        $this->setPotentialQuantityProduct(0, 1);
     }
 
 
     public function productLog(): void
     {
-        echo 'Курица с личным номером ' . $this->idAnimal . ' насидела ' . $this->potentialQuantityProduct . ' яиц' . PHP_EOL;
-    }
-
-    public function __get($name)
-    {
-        switch ($name) {
-            case 'idAnimal':
-                return $this->idAnimal;
-            case 'animalType':
-                return $this->animalType;
-            case 'potentialQuantityProduct':
-                return $this->setPotentialQuantityProduct(0, 1);
+        if (isset($this->quantityProducts)) {
+            echo 'Курица с личным номером ' . $this->idAnimal . ' насидела ' . $this->quantityProducts . ' яиц' . PHP_EOL;
+            return;
         }
+        echo 'Упс, продукция ещё не собрана!';
     }
 }
-

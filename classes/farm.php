@@ -69,7 +69,8 @@ class Farm
      */
     private function setProductsAccounting(\classes\Animal\FarmAnimal $animal)
     {
-        [$quantityProducts, $animalType] = $animal->giveProduct();
+        $animalType = $animal->getTypeAnimal();
+        $quantityProducts = $animal->collectProducts();
         if (array_key_exists($animalType, $this->productTracking)) {
             $this->productTracking[$animalType] += $quantityProducts;
             return;

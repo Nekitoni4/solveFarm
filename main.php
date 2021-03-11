@@ -7,7 +7,7 @@ use Classes\Animal\{Chicken, Cow};
 
 
 /**
- * @return [void]
+ * @return [\Classes\Farm\Farm]
  * Инициализируем экземпляр фермы животными и возвращаем его
  * 
  */

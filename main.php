@@ -8,30 +8,24 @@ use Classes\Animal\{Chicken, Cow};
 
 /**
  * @return [void]
- * Запускает цикл событий фермы
+ * Инициализируем экземпляр фермы животными и возвращаем его
  * 
  */
 
 
-function runFarm()
+function runFarm(): \Classes\Farm\Farm
 {
     $farm = new Farm();
 
     for ($id = 1; $id <= 10; ++$id) {
         $chicken = new Chicken($id);
         $farm->addAnimalAccounting($chicken);
-        $farm->addProductsAccounting($chicken);
     }
 
     for ($id = 1; $id <= 20; ++$id) {
         $cow = new Cow($id);
         $farm->addAnimalAccounting($cow);
-        $farm->addProductsAccounting($cow);
     }
-
-    $farm->renderAnimalProductsLog();
-    $farm->renderProductsStat();
+    return $farm;
 }
 
-
-runFarm();

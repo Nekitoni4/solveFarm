@@ -24,8 +24,8 @@ class Farm
      * Рассчитывает и выводит на экран результативность каждого животного
      */
     public function renderProductsStat()
-    {   
-        foreach($this->productTracking as $animal => $productQuantity) {
+    {
+        foreach ($this->productTracking as $animal => $productQuantity) {
             echo $animal . ': на выходе ' . $productQuantity . ' единиц продукта' . PHP_EOL;
         }
     }
@@ -37,7 +37,7 @@ class Farm
      * 
      * @return [void]
      * 
-     * Добавляет экземпляр каждого животного в хлев
+     * Реализация добавления экземпляра каждого животного в хлев
      */
     private function setAnimalAccounting(\classes\Animal\FarmAnimal $animal)
     {
@@ -53,7 +53,7 @@ class Farm
      */
     public function renderAnimalProductsLog()
     {
-        foreach($this->animalTracking as $animal) {
+        foreach ($this->animalTracking as $animal) {
             echo $animal->productLog();
         }
     }
@@ -64,7 +64,7 @@ class Farm
      * 
      * @return [void]
      * 
-     * Собирает продукцию с животных и связывает каждый вид с общим количеством продукции
+     * Реализация сбора продукции с животных и связывания каждого вида с общим количеством продукции
      * 
      */
     private function setProductsAccounting(\classes\Animal\FarmAnimal $animal)
@@ -85,11 +85,23 @@ class Farm
      * 
      * @return [void]
      * 
-     * Занимается распределением продукции и учётом животных
+     * "Интерфейс" добавления животного в хлев
      */
-    public function setFarmAccounting(\classes\Animal\FarmAnimal $animal)
+    public function addAnimalAccounting(\classes\Animal\FarmAnimal $animal)
+    {
+        $this->setAnimalAccounting($animal);
+    }
+
+    
+    /**
+     * @param \classes\Animal\FarmAnimal $animal
+     * 
+     * @return [void]
+     * 
+     * "Интерфейс" сбора продукции с животного
+     */
+    public function addProductsAccounting(\classes\Animal\FarmAnimal $animal)
     {
         $this->setProductsAccounting($animal);
-        $this->setAnimalAccounting($animal);
     }
 }

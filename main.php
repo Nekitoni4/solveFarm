@@ -19,12 +19,14 @@ function runFarm()
 
     for ($id = 1; $id <= 10; ++$id) {
         $chicken = new Chicken($id);
-        $farm->setFarmAccounting($chicken);
+        $farm->addAnimalAccounting($chicken);
+        $farm->addProductsAccounting($chicken);
     }
 
     for ($id = 1; $id <= 20; ++$id) {
         $cow = new Cow($id);
-        $farm->setFarmAccounting($cow);
+        $farm->addAnimalAccounting($cow);
+        $farm->addProductsAccounting($cow);
     }
 
     $farm->renderAnimalProductsLog();
